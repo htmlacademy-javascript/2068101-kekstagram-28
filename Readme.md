@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Владислав Грибович](https://up.htmlacademy.ru/javascript/28/user/2068101).
-* Наставник: `Неизвестно`.
+* Наставник: [Алина Вишнякова](https://htmlacademy.ru/profile/malina_ve).
 
 ---
 
