@@ -1,5 +1,5 @@
-const username = ['Владислав', 'Алина', 'Елена', 'Василий', 'Дмитрий', 'Екатерина'];
-const specification = [
+const names = ['Владислав', 'Алина', 'Елена', 'Василий', 'Дмитрий', 'Екатерина'];
+const specifications = [
   'Отдыхаю на море',
   'Привет из 2007',
   'Моя новая ласточка',
@@ -7,21 +7,47 @@ const specification = [
   'Это я в музее',
   'Ночные покатушки',
   'Wedding Day',
-  'А тут мы кушаем, очень вкусно'];
+  'А тут мы кушаем, очень вкусно'
+];
 const offers = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+];
 
 const getRandomArbitrary = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-const getRandomArrayElement = (elements) => elements[getRandomArbitrary(0, elements.length - 1)];
+
+const getRandomArrayElement = (array) => array[getRandomArbitrary(0, array.length - 1)];
+
+const getRandomId = (index1, index2) => {
+  const sum = String(index1) + String(index2);
+  return Number(sum);
+};
+
+const getAvatar = (int) => `img/avatar-${int}.svg`;
+
+const getMessage = (array, int) => {
+  let result = '';
+  for (let i = 1; i < int; i++) {
+    result += getRandomArrayElement(array);
+    if (i < int) {
+      result += ' ';
+    }
+  }
+  return result;
+};
+
+const getName = (array) => getRandomArrayElement(array);
+
+const getPhotoUrl = (id) => `photos/${id}.jpg`;
+
 const createRandomId = (min, max) => {
   const values = [];
 
@@ -38,27 +64,35 @@ const createRandomId = (min, max) => {
   };
 };
 
-const generatorPhotoId = createRandomId(1, 25);
-const generatorUrlId = createRandomId(1, 25);
-const generatorCommentId = createRandomId(1, 100);
+const generateId = createRandomId(1, 25);
+const generateUrlId = createRandomId(1, 25);
 
-const resultComments = [];
-for (let i = 0; i < 25; i++) {
-  resultComments.push(
-    { id: generatorCommentId(),
-      avatar: `img/avatar-${getRandomArbitrary(1, 6)}.svg`,
-      message: getRandomArrayElement(offers),
-      name: getRandomArrayElement(username)}
-  );
-}
+const getComments = (index) => {
+  const result = [];
+  for (let i = 1; i <= getRandomArbitrary(1, 6); i++) {
+    result.push({
+      id: getRandomId(index, i),
+      avatar: getAvatar(getRandomArbitrary(1, 6)),
+      message: getMessage(offers, getRandomArbitrary(1, 2)),
+      name: getName(names)
+    });
+  }
+  return result;
+};
 
-const result = [];
-for (let i = 0; i < 25; i++) {
-  result.push(
-    { id: generatorPhotoId(),
-      url: `photos/${generatorUrlId()}.jpg`,
-      description: getRandomArrayElement(specification),
+const getPhotoDescription = () => {
+  const result = [];
+  for (let i = 1; i < 26; i++) {
+    result.push({
+      id: generateId(),
+      url: getPhotoUrl(generateUrlId()),
+      description: getRandomArrayElement(specifications),
       likes: getRandomArbitrary(15, 200),
-      comments: getRandomArrayElement(resultComments)}
-  );
-}
+      comments: getComments(i)
+    });
+  }
+  return result;
+};
+
+console.log(getPhotoDescription());
+
