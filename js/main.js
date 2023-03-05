@@ -7,7 +7,13 @@ const specifications = [
   'Это я в музее',
   'Ночные покатушки',
   'Wedding Day',
-  'А тут мы кушаем, очень вкусно'
+  'А тут мы кушаем, очень вкусно',
+  'Как провести идеальный выходной',
+  'Новый любимый наряд',
+  'Отличный день для прогулки по городу',
+  'В поисках приключений',
+  'Мой пушистый друг',
+  'Кофе — мой лучший друг'
 ];
 const offers = [
   'Всё отлично!',
@@ -18,24 +24,19 @@ const offers = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const getRandomArbitrary = (min, max) => {
+const getRandomNumber = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const getRandomArrayElement = (array) => array[getRandomArbitrary(0, array.length - 1)];
-
-const getRandomId = (index1, index2) => {
-  const sum = String(index1) + String(index2);
-  return Number(sum);
-};
+const getRandomArrayElement = (array) => array[getRandomNumber(0, array.length - 1)];
 
 const getAvatar = (int) => `img/avatar-${int}.svg`;
 
 const getMessage = (array, int) => {
   let result = '';
-  for (let i = 1; i < int; i++) {
+  for (let i = 0; i < int; i++) {
     result += getRandomArrayElement(array);
     if (i < int) {
       result += ' ';
@@ -52,12 +53,12 @@ const createRandomId = (min, max) => {
   const values = [];
 
   return function () {
-    let currentValue = getRandomArbitrary(min, max);
+    let currentValue = getRandomNumber(min, max);
     if (values.length >= (max - min + 1)) {
       return null;
     }
     while (values.includes(currentValue)) {
-      currentValue = getRandomArbitrary(min, max);
+      currentValue = getRandomNumber(min, max);
     }
     values.push(currentValue);
     return currentValue;
@@ -66,14 +67,16 @@ const createRandomId = (min, max) => {
 
 const generateId = createRandomId(1, 25);
 const generateUrlId = createRandomId(1, 25);
+const generateCommentId = createRandomId(1, 50);
 
-const getComments = (index) => {
+const getComments = () => {
   const result = [];
-  for (let i = 1; i <= getRandomArbitrary(1, 6); i++) {
+  const number = getRandomNumber(1, 2);
+  for (let i = 1; i <= number; i++) {
     result.push({
-      id: getRandomId(index, i),
-      avatar: getAvatar(getRandomArbitrary(1, 6)),
-      message: getMessage(offers, getRandomArbitrary(1, 2)),
+      id: generateCommentId(),
+      avatar: getAvatar(getRandomNumber(1, 6)),
+      message: getMessage(offers, getRandomNumber(1, 2)),
       name: getName(names)
     });
   }
@@ -87,12 +90,11 @@ const getPhotoDescription = () => {
       id: generateId(),
       url: getPhotoUrl(generateUrlId()),
       description: getRandomArrayElement(specifications),
-      likes: getRandomArbitrary(15, 200),
-      comments: getComments(i)
+      likes: getRandomNumber(15, 200),
+      comments: getComments(getRandomNumber(1, 2))
     });
   }
   return result;
 };
 
-console.log(getPhotoDescription());
-
+getPhotoDescription();
