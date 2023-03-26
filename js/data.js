@@ -27,7 +27,7 @@ const offers = [
 ];
 
 const PHOTO_COUNT = 25;
-
+const MAX_COUNT_COMMENT = 200;
 const generateId = createRandomId(1, 25);
 const generateUrlId = createRandomId(1, 25);
 const generateCommentId = createRandomId(1, 50);
@@ -46,19 +46,13 @@ const getComments = () => {
   return result;
 };
 
-const getPhotoDescription = () => {
-  const result = [];
-  for (let i = 1; i < 26; i++) {
-    result.push({
-      id: generateId(),
-      url: getPhotoUrl(generateUrlId()),
-      description: getRandomArrayElement(specifications),
-      likes: getRandomNumber(15, 200),
-      comments: getComments(getRandomNumber(1, 2))
-    });
-  }
-  return result;
-};
+const getPhotoDescription = () => ({
+  id: generateId(),
+  url: getPhotoUrl(generateUrlId()),
+  description: getRandomArrayElement(specifications),
+  likes: getRandomNumber(15, 200),
+  comments: Array.from({length: getRandomNumber(1, MAX_COUNT_COMMENT)}, getComments)
+});
 
 const getPhotoDescriptions = () => Array.from({length: PHOTO_COUNT},getPhotoDescription);
 
