@@ -39,4 +39,6 @@ const createRandomId = (min, max) => {
   };
 };
 
-export {getRandomNumber, getRandomArrayElement, getAvatar, getMessage, getName, getPhotoUrl, createRandomId};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomNumber, getRandomArrayElement, getAvatar, getMessage, getName, getPhotoUrl, createRandomId, isEscapeKey};
