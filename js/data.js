@@ -27,14 +27,13 @@ const offers = [
 ];
 
 const PHOTO_COUNT = 25;
-const MAX_COUNT_COMMENT = 200;
 const generateId = createRandomId(1, 25);
 const generateUrlId = createRandomId(1, 25);
 const generateCommentId = createRandomId(1, 50);
 
 const getComments = () => {
   const result = [];
-  const number = getRandomNumber(1, 2);
+  const number = getRandomNumber(1, 10);
   for (let i = 1; i <= number; i++) {
     result.push({
       id: generateCommentId(),
@@ -51,9 +50,11 @@ const getPhotoDescription = () => ({
   url: getPhotoUrl(generateUrlId()),
   description: getRandomArrayElement(specifications),
   likes: getRandomNumber(15, 200),
-  comments: Array.from({length: getRandomNumber(1, MAX_COUNT_COMMENT)}, getComments)
+  comments: getComments(),
 });
 
-const getPhotoDescriptions = () => Array.from({length: PHOTO_COUNT},getPhotoDescription);
+const getPhotoDescriptions = () => Array.from({length: PHOTO_COUNT}, getPhotoDescription);
 
-export {getPhotoDescriptions};
+const photoList = getPhotoDescriptions();
+
+export {photoList};
