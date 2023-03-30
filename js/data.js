@@ -27,8 +27,6 @@ const offers = [
 ];
 
 const PHOTO_COUNT = 25;
-const MIN_COUNT_COMMENT = 1;
-const MAX_COUNT_COMMENT = 10;
 const generateId = createRandomId(1, 25);
 const generateUrlId = createRandomId(1, 25);
 const generateCommentId = createRandomId(1, 50);
