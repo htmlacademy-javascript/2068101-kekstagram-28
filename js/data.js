@@ -33,22 +33,26 @@ const generateId = createRandomId(1, 25);
 const generateUrlId = createRandomId(1, 25);
 const generateCommentId = createRandomId(1, 50);
 
-const getComment = () => ({
-  id: generateCommentId(),
-  avatar: getAvatar(getRandomNumber(1, 6)),
-  message: getMessage(offers, getRandomNumber(1, 2)),
-  name: getName(names),
-});
-
-const getComments = Array.from({length: getRandomNumber(MIN_COUNT_COMMENT, MAX_COUNT_COMMENT)}, getComment);
-
+const getComments = () => {
+  const result = [];
+  const number = getRandomNumber(1, 10);
+  for (let i = 1; i <= number; i++) {
+    result.push({
+      id: generateCommentId(),
+      avatar: getAvatar(getRandomNumber(1, 6)),
+      message: getMessage(offers, getRandomNumber(1, 2)),
+      name: getName(names)
+    });
+  }
+  return result;
+};
 
 const getPhotoDescription = () => ({
   id: generateId(),
   url: getPhotoUrl(generateUrlId()),
   description: getRandomArrayElement(specifications),
   likes: getRandomNumber(15, 200),
-  comments: getComments,
+  comments: getComments(),
 });
 
 const getPhotoDescriptions = () => Array.from({length: PHOTO_COUNT}, getPhotoDescription);
@@ -56,4 +60,3 @@ const getPhotoDescriptions = () => Array.from({length: PHOTO_COUNT}, getPhotoDes
 const photoList = getPhotoDescriptions();
 
 export {photoList};
-
