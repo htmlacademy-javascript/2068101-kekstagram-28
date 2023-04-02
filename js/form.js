@@ -30,11 +30,20 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
+const disabledButton = () => {
+  if (pristine.validate() === true) {
+    imgUploadButton.removeAttribute('disabled');
+  } else {
+    imgUploadButton.setAttribute('disabled', true);
+  }
+};
+
 const openModal = () => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   imgUploadCancel.addEventListener('click', closeModal);
+  textHashtag.addEventListener('input', disabledButton);
 };
 
 function closeModal () {
@@ -60,20 +69,7 @@ const validateTags = (value) => {
   return hasValidTagCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
 };
 
-pristine.addValidator(
-  textHashtag,
-  validateTags,
-  TAGS_ERROR_MESSAGE
-);
-
-// const onFormSubmit = (evt) => {
-//   evt.preventDefault();
-//   pristine.validate();
-// };
-
-// imgUploadInput.addEventListener('change', onFileInputChange);
-// imgUploadCancel.addEventListener('click', onCancelButtonClick);
-// form.addEventListener('submit', onFormSubmit);
+pristine.addValidator(textHashtag, validateTags, TAGS_ERROR_MESSAGE);
 
 imgUploadInput.addEventListener('change', () =>
   openModal()

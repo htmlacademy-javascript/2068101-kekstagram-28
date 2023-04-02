@@ -5,4 +5,3 @@ import './form.js';
 
 openBigPicture(photoList);
 renderThumbnail(photoList);
-
