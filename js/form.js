@@ -28,7 +28,7 @@ const disabledButton = () => {
   }
 };
 
-const openModal = () => {
+const onOpenModal = () => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
@@ -45,9 +45,7 @@ function onCloseModal () {
   imgUploadCancel.removeEventListener('click', onCloseModal);
 }
 
-imgUploadInput.addEventListener('change', () =>
-  openModal()
-);
+imgUploadInput.addEventListener('change', onOpenModal);
 
 imgUploadButton.addEventListener('input', (evt) => {
   evt.preventDefault();
