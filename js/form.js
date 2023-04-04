@@ -1,5 +1,7 @@
 import {isEscapeKey} from './util.js';
 import {pristine} from './validation.js';
+import {resetScale} from './image-scale.js';
+import {resetFilters} from './image-effect.js';
 
 const body = document.body;
 const form = document.querySelector('.img-upload__form');
@@ -20,7 +22,7 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-const disabledButton = () => {
+const onDisabledButton = () => {
   if (pristine.validate() === true) {
     imgUploadButton.removeAttribute('disabled');
   } else {
@@ -33,16 +35,19 @@ const onOpenModal = () => {
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   imgUploadCancel.addEventListener('click', onCloseModal);
-  textHashtag.addEventListener('input', disabledButton);
+  textHashtag.addEventListener('input', onDisabledButton);
 };
 
 function onCloseModal () {
   form.reset();
   pristine.reset();
+  resetScale();
+  resetFilters();
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   imgUploadCancel.removeEventListener('click', onCloseModal);
+  textHashtag.removeEventListener('input', onDisabledButton);
 }
 
 imgUploadInput.addEventListener('change', onOpenModal);
