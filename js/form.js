@@ -2,6 +2,8 @@ import {isEscapeKey} from './util.js';
 import {pristine} from './validation.js';
 import {resetScale} from './image-scale.js';
 import {resetFilters} from './image-effect.js';
+import {sendData} from './api.js';
+import {showSuccessMessage, showErrorMessage} from './message.js';
 
 const body = document.body;
 const form = document.querySelector('.img-upload__form');
@@ -38,7 +40,7 @@ const onOpenModal = () => {
   textHashtag.addEventListener('input', onDisabledButton);
 };
 
-function onCloseModal () {
+function onCloseModal() {
   form.reset();
   pristine.reset();
   resetScale();
@@ -52,7 +54,16 @@ function onCloseModal () {
 
 imgUploadInput.addEventListener('change', onOpenModal);
 
-imgUploadButton.addEventListener('input', (evt) => {
+form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  if (pristine.validate()) {
+    const formData = new FormData(evt.target);
+    sendData(formData)
+      .then(showSuccessMessage)
+      .catch(() => {
+        showErrorMessage();
+      });
+  }
 });
+
+export {onDocumentKeydown, onCloseModal};

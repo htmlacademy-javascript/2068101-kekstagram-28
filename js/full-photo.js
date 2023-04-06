@@ -1,6 +1,6 @@
 import {generatedComment} from './comment.js';
 import {isEscapeKey} from './util.js';
-import {thumbnailContainer} from './thumbnail.js';
+import {thumbnailContainer, renderThumbnail} from './thumbnail.js';
 
 const body = document.body;
 const bigPhoto = document.querySelector('.big-picture');
@@ -40,14 +40,15 @@ function closeUserModal () {
   body.classList.remove('modal-open');
 }
 
-const openBigPicture = (picture) => {
+const openBigPicture = (data) => {
+  renderThumbnail(data);
   thumbnailContainer.addEventListener('click', (evt) => {
     const picturesWindow = evt.target.closest('[data-thumbnail-id]');
     if (!picturesWindow) {
       return;
     }
 
-    const picturesImg = picture.find(
+    const picturesImg = data.find(
       (item) => item.id === Number(picturesWindow.dataset.thumbnailId)
     );
 
