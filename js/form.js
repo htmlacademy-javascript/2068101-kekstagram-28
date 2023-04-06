@@ -37,10 +37,10 @@ const onOpenModal = () => {
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   imgUploadCancel.addEventListener('click', onCloseModal);
-  // textHashtag.addEventListener('input', onDisabledButton);
+  textHashtag.addEventListener('input', onDisabledButton);
 };
 
-function onCloseModal () {
+function onCloseModal() {
   form.reset();
   pristine.reset();
   resetScale();
@@ -49,22 +49,20 @@ function onCloseModal () {
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   imgUploadCancel.removeEventListener('click', onCloseModal);
-  // textHashtag.removeEventListener('input', onDisabledButton);
+  textHashtag.removeEventListener('input', onDisabledButton);
 }
 
 imgUploadInput.addEventListener('change', onOpenModal);
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  const isValid = pristine.validate();
-  if (isValid) {
+  if (pristine.validate()) {
     const formData = new FormData(evt.target);
     sendData(formData)
-      .then(
-        showSuccessMessage()
-      );
-  } else {
-    showErrorMessage();
+      .then(showSuccessMessage)
+      .catch(() => {
+        showErrorMessage();
+      });
   }
 });
 
