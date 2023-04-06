@@ -2,6 +2,8 @@ import {isEscapeKey} from './util.js';
 import {pristine} from './validation.js';
 import {resetScale} from './image-scale.js';
 import {resetFilters} from './image-effect.js';
+import {sendData} from './api.js';
+import {showSuccessMessage, showErrorMessage} from './message.js';
 
 const body = document.body;
 const form = document.querySelector('.img-upload__form');
@@ -35,7 +37,7 @@ const onOpenModal = () => {
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   imgUploadCancel.addEventListener('click', onCloseModal);
-  textHashtag.addEventListener('input', onDisabledButton);
+  // textHashtag.addEventListener('input', onDisabledButton);
 };
 
 function onCloseModal () {
@@ -47,12 +49,23 @@ function onCloseModal () {
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   imgUploadCancel.removeEventListener('click', onCloseModal);
-  textHashtag.removeEventListener('input', onDisabledButton);
+  // textHashtag.removeEventListener('input', onDisabledButton);
 }
 
 imgUploadInput.addEventListener('change', onOpenModal);
 
-imgUploadButton.addEventListener('input', (evt) => {
+form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  const isValid = pristine.validate();
+  if (isValid) {
+    const formData = new FormData(evt.target);
+    sendData(formData)
+      .then(
+        showSuccessMessage()
+      );
+  } else {
+    showErrorMessage();
+  }
 });
+
+export {onDocumentKeydown, onCloseModal};
