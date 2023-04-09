@@ -40,14 +40,13 @@ function closeUserModal () {
   body.classList.remove('modal-open');
 }
 
-const openBigPicture = (data) => {
+const renderGallery = (data) => {
   renderThumbnail(data);
   thumbnailContainer.addEventListener('click', (evt) => {
     const picturesWindow = evt.target.closest('[data-thumbnail-id]');
     if (!picturesWindow) {
       return;
     }
-
     const picturesImg = data.find(
       (item) => item.id === Number(picturesWindow.dataset.thumbnailId)
     );
@@ -56,5 +55,4 @@ const openBigPicture = (data) => {
   });
 };
 
-export {openBigPicture};
-
+export {renderGallery};

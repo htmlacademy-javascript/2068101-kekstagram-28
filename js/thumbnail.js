@@ -5,6 +5,7 @@ const thumbnailContainer = document.querySelector('.pictures');
 const thumbnailPhotoFragment = document.createDocumentFragment();
 
 const renderThumbnail = (data) => {
+  thumbnailContainer.querySelectorAll('.picture').forEach((element) => element.remove());
   data.forEach(({comments, url, likes, id}) => {
     const thumbnailElement = thumbnailTemplate.cloneNode(true);
     thumbnailElement.querySelector('.picture__img').src = url;
