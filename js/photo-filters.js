@@ -14,7 +14,7 @@ const sortRandom = () => Math.random() - 0.5;
 const getFilterPictures = () =>{
   switch(currentFilter){
     case Filter.RANDOM: return pictures.slice().sort(sortRandom).slice(0, PICTURES_COUNT);
-    case Filter.DISCUSSED: return pictures.sort(comparePictures);
+    case Filter.DISCUSSED: return pictures.slice().sort(comparePictures);
     default: return pictures.slice();
   }
 };

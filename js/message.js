@@ -1,7 +1,5 @@
 import {onDocumentKeydown, onCloseModal} from './form.js';
 
-const ALERT_SHOW_TIME = 5000;
-
 const body = document.body;
 const successMessageTemplate = document.querySelector('#success').content;
 const newSuccessMessage = successMessageTemplate.cloneNode(true);
@@ -57,26 +55,6 @@ const showErrorMessage = () => {
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
-const showAlert = (message) => {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = '100';
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = '120px';
-  alertContainer.style.top = '0';
-  alertContainer.style.right = '120px';
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
-  alertContainer.textContent = message;
-
-  document.body.append(alertContainer);
-
-  setTimeout(() => {
-    alertContainer.remove();
-  }, ALERT_SHOW_TIME);
-};
-
 createMessages();
 
-export {showSuccessMessage, showErrorMessage, showAlert};
+export {showSuccessMessage, showErrorMessage};
