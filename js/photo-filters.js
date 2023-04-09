@@ -1,21 +1,23 @@
 const PICTURES_COUNT = 10;
+const PICTURES_RANDOM = 0.5;
 const Filter = {
   DEFAULT: 'filter-default',
   RANDOM: 'filter-random',
   DISCUSSED: 'filter-discussed',
 };
+
 const filterElement = document.querySelector('.img-filters');
 let currentFilter = Filter.DEFAULT;
 let pictures = [];
 
 const comparePictures = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
-const sortRandom = () => Math.random() - 0.5;
+const sortRandom = () => Math.random() - PICTURES_RANDOM;
 
 const getFilterPictures = () =>{
   switch(currentFilter){
-    case Filter.RANDOM: return pictures.slice().sort(sortRandom).slice(0, PICTURES_COUNT);
-    case Filter.DISCUSSED: return pictures.slice().sort(comparePictures);
-    default: return pictures.slice();
+    case Filter.RANDOM: return [...pictures].slice().sort(sortRandom).slice(0, PICTURES_COUNT);
+    case Filter.DISCUSSED: return [...pictures].sort(comparePictures);
+    default: return [...pictures];
   }
 };
 
