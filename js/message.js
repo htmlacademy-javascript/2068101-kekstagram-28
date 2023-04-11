@@ -1,60 +1,52 @@
-import {onDocumentKeydown, onCloseModal} from './form.js';
+import {isEscapeKey} from './util.js';
 
-const body = document.body;
-const successMessageTemplate = document.querySelector('#success').content;
-const newSuccessMessage = successMessageTemplate.cloneNode(true);
-const successButton = newSuccessMessage.querySelector('.success__button');
+const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+const newMessageSuccess = successMessageTemplate.cloneNode(true);
+const successButton = newMessageSuccess.querySelector('.success__button');
+const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+const newMessageError = errorMessageTemplate.cloneNode(true);
+const errorButton = newMessageError.querySelector('.error__button');
 
-const errorMessageTemplate = document.querySelector('#error').content;
-const newErrorMessage = errorMessageTemplate.cloneNode(true);
-const errorButton = newErrorMessage.querySelector('.error__button');
+successButton.addEventListener('click', () => {
+  newMessageSuccess.remove();
+  document.removeEventListener('keydown', onDocumentKeydown);
+});
 
-const createMessages = () => {
-  body.append(newSuccessMessage);
-  document.querySelector('.success').classList.add('hidden');
-  body.append(newErrorMessage);
-  document.querySelector('.error').classList.add('hidden');
-};
-
-const closeSuccessMessage = () => {
-  document.querySelector('.success').classList.add('hidden');
-  successButton.removeEventListener('click', closeSuccessMessage);
-  onCloseModal();
-};
+document.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('.success')) {
+    newMessageSuccess.remove();
+  }
+});
 
 const showSuccessMessage = () => {
-  document.querySelector('.success').classList.remove('hidden');
-  successButton.addEventListener('click', closeSuccessMessage);
-};
-
-const onDocumentErrorKeydown = (evt) => {
-  if(evt.key === 'Escape'){
-    closeErrorMessage();
-  }
-};
-
-const onDocumentClick = (evt) => {
-  if(evt.target.classList.contains('error')){
-    closeErrorMessage();
-  }
-};
-
-function closeErrorMessage () {
-  document.querySelector('.error').classList.add('hidden');
-  errorButton.removeEventListener('click', closeErrorMessage);
-  document.removeEventListener('keydown', onDocumentErrorKeydown);
-  document.removeEventListener('click', onDocumentClick);
+  document.body.append(newMessageSuccess);
   document.addEventListener('keydown', onDocumentKeydown);
-}
+};
+
+
+errorButton.addEventListener('click', () => {
+  newMessageError.remove();
+  document.removeEventListener('keydown', onDocumentKeydown);
+});
+
+document.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('error')) {
+    newMessageError.remove();
+  }
+});
 
 const showErrorMessage = () => {
-  document.querySelector('.error').classList.remove('hidden');
-  errorButton.addEventListener('click', closeErrorMessage);
-  document.addEventListener('keydown', onDocumentErrorKeydown);
-  document.addEventListener('click', onDocumentClick);
-  document.removeEventListener('keydown', onDocumentKeydown);
+  document.body.append(newMessageError);
+  document.addEventListener('keydown', onDocumentKeydown);
 };
 
-createMessages();
+function onDocumentKeydown(evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    newMessageSuccess.remove();
+    newMessageError.remove();
+    document.removeEventListener('keydown', onDocumentKeydown);
+  }
+}
 
 export {showSuccessMessage, showErrorMessage};
