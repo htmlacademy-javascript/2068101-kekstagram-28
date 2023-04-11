@@ -14,11 +14,11 @@ const textHashtag = document.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
 const imgUploadButton = document.querySelector('.img-upload__submit');
 
-const ifInTextFieldFocused = () =>
+const isInputActive = () =>
   document.activeElement === textHashtag || document.activeElement === textDescription;
 
 const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt) && !ifInTextFieldFocused()) {
+  if (isEscapeKey(evt) && !isInputActive()) {
     evt.preventDefault();
     onCloseModal();
   }
@@ -35,7 +35,7 @@ const onDisabledButton = () => {
 const onOpenModal = () => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
+  imgUploadInput.addEventListener('keydown', onDocumentKeydown);
   imgUploadCancel.addEventListener('click', onCloseModal);
   textHashtag.addEventListener('input', onDisabledButton);
 };
@@ -47,7 +47,7 @@ function onCloseModal() {
   resetFilters();
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentKeydown);
+  imgUploadInput.removeEventListener('keydown', onDocumentKeydown);
   imgUploadCancel.removeEventListener('click', onCloseModal);
   textHashtag.removeEventListener('input', onDisabledButton);
 }
@@ -59,7 +59,10 @@ form.addEventListener('submit', (evt) => {
   if (pristine.validate()) {
     const formData = new FormData(evt.target);
     sendData(formData)
-      .then(showSuccessMessage)
+      .then(() =>{
+        onCloseModal();
+        showSuccessMessage();
+      })
       .catch(() => {
         showErrorMessage();
       });

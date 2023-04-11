@@ -1,13 +1,12 @@
-const DEFAULT_EFFECT = {
-  name: 'none',
-  style: 'none',
-  min: 0,
-  max: 100,
-  step: 1,
-  unit: ''
-};
-
 const EFFECTS = [
+  {
+    name: 'none',
+    style: 'none',
+    min: 0,
+    max: 100,
+    step: 1,
+    unit: ''
+  },
   {
     name: 'chrome',
     style: 'grayscale',
@@ -56,9 +55,9 @@ const sliderElement = document.querySelector('.effect-level__slider');
 const sliderContainerElement = document.querySelector('.img-upload__effect-level');
 const effectLevel = document.querySelector('.effect-level__value');
 
-let chosenFilter = DEFAULT_EFFECT;
+let chosenFilter = EFFECTS[0];
 
-const isDefault = () => chosenFilter === DEFAULT_EFFECT;
+const isDefault = () => chosenFilter === EFFECTS[0];
 
 const showSlider = () => {
   sliderContainerElement.classList.remove('hidden');
@@ -97,23 +96,23 @@ const onFiltersChange = (evt) => {
 const onSliderUpdate = () =>{
   const sliderValue = sliderElement.noUiSlider.get();
   imageElement.style.filter = isDefault()
-    ? DEFAULT_EFFECT.style
+    ? EFFECTS[0].style
     : `${chosenFilter.style}(${sliderValue}${chosenFilter.unit})`;
   effectLevel.value = sliderValue;
 };
 
 const resetFilters = () => {
-  chosenFilter = DEFAULT_EFFECT;
+  chosenFilter = EFFECTS[0];
   updateSlider();
 };
 
 noUiSlider.create(sliderElement, {
   range: {
-    min: DEFAULT_EFFECT.min,
-    max: DEFAULT_EFFECT.max,
+    min: EFFECTS[0].min,
+    max: EFFECTS[0].max,
   },
-  start: DEFAULT_EFFECT.max,
-  step: DEFAULT_EFFECT.step,
+  start: EFFECTS[0].max,
+  step: EFFECTS[0].step,
   connect:'lower',
 });
 
