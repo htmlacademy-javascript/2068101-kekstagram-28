@@ -9,16 +9,12 @@ const TAGS_ERROR_MESSAGE_LENGTH = 'Максимальная длина одно�
 const form = document.querySelector('.img-upload__form');
 const textHashtag = document.querySelector('.text__hashtags');
 
-
 const pristine = new Pristine (form, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
 });
 
-const getHashtag = (value) => {
-  const hashtag = value.trim().split(' ').filter((tag) => tag.trim().length);
-  return hashtag;
-};
+const getHashtag = (value) => value.trim().split(' ').filter((tag) => tag.trim().length);
 
 const validateHashtagLength = (value) => getHashtag(value).every((item) => item.length <= MAX_HASHTAGS_LENGHT);
 
@@ -35,6 +31,5 @@ pristine.addValidator(textHashtag, validateHashtagSymbol, TAGS_ERROR_MESSAGE);
 pristine.addValidator(textHashtag, validateHashtagLength, TAGS_ERROR_MESSAGE_LENGTH);
 pristine.addValidator(textHashtag, validateHashtagCount, TAGS_ERROR_MESSAGE_COUNT);
 pristine.addValidator(textHashtag, validateHashtagUniqueness, TAGS_ERROR_MESSAGE_REPEAT);
-
 
 export {pristine};

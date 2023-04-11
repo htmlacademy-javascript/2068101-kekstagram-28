@@ -1,5 +1,6 @@
 import {isEscapeKey} from './util.js';
 
+const body = document.body;
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const newMessageSuccess = successMessageTemplate.cloneNode(true);
 const successButton = newMessageSuccess.querySelector('.success__button');
@@ -19,7 +20,7 @@ document.addEventListener('click', (evt) => {
 });
 
 const showSuccessMessage = () => {
-  document.body.append(newMessageSuccess);
+  body.append(newMessageSuccess);
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
@@ -36,7 +37,7 @@ document.addEventListener('click', (evt) => {
 });
 
 const showErrorMessage = () => {
-  document.body.append(newMessageError);
+  body.append(newMessageError);
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
