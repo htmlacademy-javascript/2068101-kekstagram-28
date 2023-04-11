@@ -1,4 +1,3 @@
-// import {generatedComment} from './comment.js';
 import {isEscapeKey} from './util.js';
 import {thumbnailContainer, renderThumbnail} from './thumbnail.js';
 
