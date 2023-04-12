@@ -53,7 +53,7 @@ const imageElement = document.querySelector('.img-upload__preview img');
 const effectsElement = document.querySelector('.effects');
 const sliderElement = document.querySelector('.effect-level__slider');
 const sliderContainerElement = document.querySelector('.img-upload__effect-level');
-const effectLevel = document.querySelector('.effect-level__value');
+const effectLevelElement = document.querySelector('.effect-level__value');
 
 let chosenFilter = EFFECTS[0];
 
@@ -98,7 +98,7 @@ const onSliderUpdate = () =>{
   imageElement.style.filter = isDefault()
     ? EFFECTS[0].style
     : `${chosenFilter.style}(${sliderValue}${chosenFilter.unit})`;
-  effectLevel.value = sliderValue;
+  effectLevelElement.value = sliderValue;
 };
 
 const resetFilters = () => {

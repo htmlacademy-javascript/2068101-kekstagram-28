@@ -6,16 +6,20 @@ import {sendData} from './api.js';
 import {showSuccessMessage, showErrorMessage} from './message.js';
 
 const body = document.body;
-const form = document.querySelector('.img-upload__form');
-const imgUploadInput = document.querySelector('#upload-file');
-const imgUploadOverlay = document.querySelector('.img-upload__overlay');
-const imgUploadCancel = document.querySelector('.img-upload__cancel');
-const textHashtag = document.querySelector('.text__hashtags');
-const textDescription = document.querySelector('.text__description');
-const imgUploadButton = document.querySelector('.img-upload__submit');
+const formElement = document.querySelector('.img-upload__form');
+const imgUploadInputElement = document.querySelector('#upload-file');
+const imgUploadOverlayElement = document.querySelector('.img-upload__overlay');
+const imgUploadCancelElement = document.querySelector('.img-upload__cancel');
+const textHashtagElement = document.querySelector('.text__hashtags');
+const textDescriptionElement = document.querySelector('.text__description');
+const imgUploadButtonElement = document.querySelector('.img-upload__submit');
+const SubmitButtonText = {
+  IDLE: 'Сохранить',
+  SENDING: 'Сохраняю...'
+};
 
 const isInputActive = () =>
-  document.activeElement === textHashtag || document.activeElement === textDescription;
+  document.activeElement === textHashtagElement || document.activeElement === textDescriptionElement;
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt) && !isInputActive()) {
@@ -24,49 +28,56 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-const onDisabledButton = () => {
-  if (pristine.validate() === true) {
-    imgUploadButton.removeAttribute('disabled');
-  } else {
-    imgUploadButton.setAttribute('disabled', true);
-  }
+const onDisabledButton = () => pristine.validate() ? imgUploadButtonElement.removeAttribute('disabled') : imgUploadButtonElement.setAttribute('disabled');
+
+const blockSubmitButton = () => {
+  imgUploadButtonElement.disabled = true;
+  imgUploadButtonElement.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  imgUploadButtonElement.disabled = false;
+  imgUploadButtonElement.textContent = SubmitButtonText.IDLE;
 };
 
 const onOpenModal = () => {
-  imgUploadOverlay.classList.remove('hidden');
+  imgUploadOverlayElement.classList.remove('hidden');
   body.classList.add('modal-open');
-  imgUploadInput.addEventListener('keydown', onDocumentKeydown);
-  imgUploadCancel.addEventListener('click', onCloseModal);
-  textHashtag.addEventListener('input', onDisabledButton);
+  imgUploadInputElement.addEventListener('keydown', onDocumentKeydown);
+  imgUploadCancelElement.addEventListener('click', onCloseModal);
+  textHashtagElement.addEventListener('input', onDisabledButton);
 };
 
 function onCloseModal() {
-  form.reset();
+  formElement.reset();
   pristine.reset();
   resetScale();
   resetFilters();
-  imgUploadOverlay.classList.add('hidden');
+  imgUploadOverlayElement.classList.add('hidden');
   body.classList.remove('modal-open');
-  imgUploadInput.removeEventListener('keydown', onDocumentKeydown);
-  imgUploadCancel.removeEventListener('click', onCloseModal);
-  textHashtag.removeEventListener('input', onDisabledButton);
+  imgUploadInputElement.removeEventListener('keydown', onDocumentKeydown);
+  imgUploadCancelElement.removeEventListener('click', onCloseModal);
+  textHashtagElement.removeEventListener('input', onDisabledButton);
 }
 
-imgUploadInput.addEventListener('change', onOpenModal);
+imgUploadInputElement.addEventListener('change', onOpenModal);
 
-form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  if (pristine.validate()) {
-    const formData = new FormData(evt.target);
-    sendData(formData)
-      .then(() =>{
-        onCloseModal();
-        showSuccessMessage();
-      })
-      .catch(() => {
-        showErrorMessage();
-      });
-  }
-});
-
-export {onDocumentKeydown, onCloseModal};
+const setUserFormSubmit = () => {
+  formElement.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    if (pristine.validate()) {
+      blockSubmitButton();
+      const formData = new FormData(evt.target);
+      sendData(formData)
+        .then(() => {
+          onCloseModal();
+          showSuccessMessage();
+        })
+        .catch(() => {
+          showErrorMessage();
+        })
+        .finally(unblockSubmitButton);
+    }
+  });
+};
+export {onDocumentKeydown, onCloseModal, setUserFormSubmit};

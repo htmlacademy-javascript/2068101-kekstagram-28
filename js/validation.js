@@ -6,10 +6,10 @@ const TAGS_ERROR_MESSAGE_REPEAT = 'Каждый хештег должен быт
 const TAGS_ERROR_MESSAGE_COUNT = 'Нельзя указать больше 5-ти хэштегов';
 const TAGS_ERROR_MESSAGE_LENGTH = 'Максимальная длина одного хэш-тега 20 символов';
 
-const form = document.querySelector('.img-upload__form');
-const textHashtag = document.querySelector('.text__hashtags');
+const formElement = document.querySelector('.img-upload__form');
+const textHashtagElement = document.querySelector('.text__hashtags');
 
-const pristine = new Pristine (form, {
+const pristine = new Pristine (formElement, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
 });
@@ -27,9 +27,9 @@ const validateHashtagUniqueness = (tags) => {
   return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
 
-pristine.addValidator(textHashtag, validateHashtagSymbol, TAGS_ERROR_MESSAGE);
-pristine.addValidator(textHashtag, validateHashtagLength, TAGS_ERROR_MESSAGE_LENGTH);
-pristine.addValidator(textHashtag, validateHashtagCount, TAGS_ERROR_MESSAGE_COUNT);
-pristine.addValidator(textHashtag, validateHashtagUniqueness, TAGS_ERROR_MESSAGE_REPEAT);
+pristine.addValidator(textHashtagElement, validateHashtagSymbol, TAGS_ERROR_MESSAGE);
+pristine.addValidator(textHashtagElement, validateHashtagLength, TAGS_ERROR_MESSAGE_LENGTH);
+pristine.addValidator(textHashtagElement, validateHashtagCount, TAGS_ERROR_MESSAGE_COUNT);
+pristine.addValidator(textHashtagElement, validateHashtagUniqueness, TAGS_ERROR_MESSAGE_REPEAT);
 
 export {pristine};

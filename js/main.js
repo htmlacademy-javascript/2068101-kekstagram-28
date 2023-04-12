@@ -1,4 +1,4 @@
-import './form.js';
+import {setUserFormSubmit} from './form.js';
 import {renderGallery} from './full-photo.js';
 import {getData} from './api.js';
 import {debounce, showAlert} from './util.js';
@@ -6,6 +6,8 @@ import {init, getFilterPictures} from './photo-filters.js';
 import './upload-photo.js';
 
 const debounceRenderGallery = debounce(renderGallery);
+
+setUserFormSubmit();
 
 getData()
   .then((data) => {
@@ -15,3 +17,4 @@ getData()
   .catch((err) => {
     showAlert(err.message);
   });
+
